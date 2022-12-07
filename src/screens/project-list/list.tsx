@@ -18,11 +18,11 @@ interface List {
 interface Prop {
     list: List[],
     user: User[],
-  
+    loading: boolean,
 }
 
-export const List = ({list, user, }: Prop) => {
-    return <Table  
+export const List = ({list, user, loading}: Prop) => {
+    return <Table  loading={loading}
     rowKey={"id"} 
     pagination={false} 
     dataSource={list} columns={[{
