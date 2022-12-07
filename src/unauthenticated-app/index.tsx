@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import {  Button, Card, Divider } from "antd"
+import {  Button, Card, Divider, Typography } from "antd"
 import React from "react"
 import { useState } from "react"
 
@@ -14,7 +14,7 @@ import right from '../assets/right.svg'
 export const UnauthenticatedApp = () => {
  
    const [reg, setReg] = useState(false)
- 
+   const [error, setError] = useState<null | Error>(null)
   return   (
     <Container>
       <Header/>
@@ -23,8 +23,9 @@ export const UnauthenticatedApp = () => {
       <Title>
          {reg ? '请注册' : '请登录'}
       </Title>
+      {error ? <Typography.Text type={'danger'} >{error.message}</Typography.Text> : null}
       {
-         reg ? <RegisterScreen/> : <LoginScreen/> 
+         reg ? <RegisterScreen  onError={setError} /> : <LoginScreen   onError={setError}/> 
         }
         <Divider/>
         <Button type={"link"} onClick={() => setReg(!reg)}>{reg ? '已经有账号了？直接登录' : '没有账号？注册新账号'}</Button>

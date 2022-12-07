@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd"
-import React from "react"
+import React, { useState } from "react"
 import { FormEvent } from "react"
 import { LongButton } from "."
 import { useAuth } from "../context/auth-context"
@@ -7,13 +7,13 @@ import { useAuth } from "../context/auth-context"
 
 
 
-export const LoginScreen = () => {
+export const LoginScreen = ({onError}: {onError: (error: Error) => void}) => {
     const apiUrl= process.env.REACT_APP_API_URL
    const {login, user} = useAuth()
-
+   const [loading, setLoading] = useState(false)
    const handSubmit = (values: {username: string,  password: string}) => {
-
-      login(values)
+      setLoading(true)
+      login(values).catch(onError).finally(() => setLoading(false))
    }
 
     return <Form  onFinish={handSubmit}>
@@ -27,7 +27,7 @@ export const LoginScreen = () => {
               <Input placeholder={'密码'} type="password" id={'password'} />
         </Form.Item>
         <Form.Item>
-        <LongButton htmlType={'submit'} type={"primary"} >登录</LongButton>
+        <LongButton htmlType={'submit'} type={"primary"} loading={loading} >登录</LongButton>
         </Form.Item>
     </Form>
 }
