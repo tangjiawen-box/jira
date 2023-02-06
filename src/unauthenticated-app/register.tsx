@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd"
-import React from "react"
+import React, { useState } from "react"
 import { FormEvent } from "react"
 import { LongButton } from "."
 import { useAuth } from "../context/auth-context"
@@ -10,13 +10,14 @@ import { useAuth } from "../context/auth-context"
 export const RegisterScreen = ({onError}: {onError: (error: Error) => void}) => {
     const apiUrl= process.env.REACT_APP_API_URL
    const {register, user} = useAuth()
-
+   const [loading, setLoading] = useState(false)
    const handSubmit = ({cpassword, ...values}: {cpassword: string, username: string,  password: string}) => {
     if (cpassword !== values.password) {
         onError(new Error('请确认两次输入的密码相同'))
         return
-    }
-      register(values).catch(onError)
+    } 
+      setLoading(true)
+      register(values).catch(onError).finally(() => setLoading(false))
    }
 
     return <Form  onFinish={handSubmit}>
@@ -34,7 +35,7 @@ export const RegisterScreen = ({onError}: {onError: (error: Error) => void}) => 
         <Input placeholder={'确认密码'} type="password" id={'cpassword'} />
   </Form.Item>
         <Form.Item>
-        <LongButton htmlType={'submit'} type={"primary"} >注册</LongButton>
+        <LongButton htmlType={'submit'} type={"primary"} loading={loading}>注册</LongButton>
         </Form.Item>
     </Form>
 }

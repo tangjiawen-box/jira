@@ -6,6 +6,8 @@ import { User } from "./search-panel"
 import { Table } from 'antd';
 import { spawn } from 'child_process';
 import dayjs from 'dayjs';
+import { render } from '@testing-library/react';
+import { Link } from 'react-router-dom';
 
 interface List {
     id: string,
@@ -27,11 +29,17 @@ export const List = ({list, user, loading}: Prop) => {
     pagination={false} 
     dataSource={list} columns={[{
         title: '名称',
-        dataIndex: 'name',
-        sorter: (a, b) => a.name.localeCompare(b.name)
+       
+        sorter: (a, b) => a.name.localeCompare(b.name),
+        render(value, project) {
+            return (
+                <Link to={`/projects/${String(project.id)}`}>{project.name}</Link>
+              );      
+              }
     },  {
         title: '部门',
-        dataIndex: 'organization'
+        dataIndex: 'organization',
+        sorter: (a, b) => a.name.localeCompare(b.name)
     },{
         title: '负责人',
         render(value, lists) {
@@ -40,7 +48,8 @@ export const List = ({list, user, loading}: Prop) => {
                user.find(user => user.id === lists.personId)?.name || "未知"
            }
             </span>
-        }
+        },
+        sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
         title: '创建时间',
@@ -50,7 +59,8 @@ export const List = ({list, user, loading}: Prop) => {
                     lists.created ? dayjs(lists.created).format('YYYY-MM-DD') : '无'
                 }
             </span>
-        }
+        },
+        sorter: (a, b) => a.name.localeCompare(b.name)
     }
         
     ]} >

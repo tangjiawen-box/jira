@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { DevTools, loadServer } from "jira-dev-tool";
 import 'antd/dist/antd'
 import { AppProviders } from './context';
+import { BrowserRouter } from 'react-router-dom';
 
 
 loadServer(() => ReactDOM.createRoot(
@@ -12,9 +13,12 @@ loadServer(() => ReactDOM.createRoot(
 ).render(
 
   <React.StrictMode>
+    
     <AppProviders>
     <DevTools />
+   <BrowserRouter>
     <App />
+    </BrowserRouter>
     </AppProviders>
     
   </React.StrictMode>

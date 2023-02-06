@@ -3,10 +3,12 @@ import { SearchPanel } from "./search-panel"
 
 import { List } from "./list"
 import qs from 'qs';
-import { CleanObject, useDebounces, useMount } from '../../utils';
+import { CleanObject, useDebounces, useDocumentTitle, useMount } from '../../utils';
 import { useHttp } from '../../utils/http';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
+import { useUrlQueryParam } from 'utils/url';
+
 
 
 export const  ProjectListScreens = () => {
@@ -23,6 +25,8 @@ export const  ProjectListScreens = () => {
 
     const debouncesParam = useDebounces(param, 200)
     const client = useHttp();
+    useDocumentTitle('项目列表', false)
+    useUrlQueryParam(['fe'])
     useEffect(() => {
         setLoading(true)
         client("projects", { data: CleanObject(debouncesParam) })
@@ -41,6 +45,7 @@ export const  ProjectListScreens = () => {
 
 
     return <Container>
+      
         <h1>项目列表</h1>
        <SearchPanel  param={param}  setParam={setParam} user={user}  />
        {error ? <Typography.Text type={'danger'} >{error.message}</Typography.Text> : null}
